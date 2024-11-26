@@ -32,3 +32,32 @@ exports.getIkasleById = async (req, res, next) => {
 };
 
 // Gehitu beste kontroladoreak...
+exports.deleteIkasleById = async (req, res, next) => {
+    try {
+      const ikasle = await Ikasle.findByIdAndDelete(req.params.id);
+      if (!ikasle) {
+        return res.status(404).json({ message: 'Ikaslea ez da aurkitu' });
+      }
+      res.json({ message: 'Ikaslea ezabatuta', data: ikasle });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  exports.updateIkasleById = async (req, res, next) => {
+    try {
+      const ikasle = await Ikasle.findByIdAndUpdate(
+        req.params.id,
+        req.body,
+        { new: true, runValidators: true }
+      );
+  
+      if (!ikasle) {
+        return res.status(404).json({ message: 'Ikaslea ez da aurkitu' });
+      }
+      res.json(ikasle);
+    } catch (error) {
+      next(error);
+    }
+  };
+  
